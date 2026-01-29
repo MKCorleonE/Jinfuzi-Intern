@@ -12,7 +12,7 @@ import traceback
 import sys
 from tqdm import tqdm
 
-LOGS_DIR = "utils"
+LOGS_DIR = "./logs"
 
 
 class DataFetcher:

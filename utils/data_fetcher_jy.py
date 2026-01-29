@@ -25,7 +25,7 @@ class DataFetcher_jy:
     3. 将成份数据与证券信息匹配并保存到本地
     """
 
-    def __init__(self, data_dir: str, max_retries: int = 3):
+    def __init__(self, data_dir: str, max_retries: int = 3, log_file: str = None):
         """初始化港股数据获取器
 
         Args:
@@ -35,6 +35,12 @@ class DataFetcher_jy:
         self.data_dir = data_dir
         self.max_retries = max_retries
         self.logger = self._setup_logger()
+
+        # 默认日志文件放在项目 logs 目录下
+        if log_file is None:
+            project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            log_file = os.path.join(project_root, 'logs', 'data_fetcher_jy.log')
+        self.logger = self._setup_logger(log_file=log_file)
 
         # 数据库连接信息
         # self.db_config = {
@@ -65,10 +71,14 @@ class DataFetcher_jy:
         # 初始化数据库连接
         self._setup_database()
 
-    def _setup_logger(self):
+    def _setup_logger(self, log_file: str = None):
         """设置日志记录器"""
         logger = logging.getLogger('DataFetcher_jy')
         logger.setLevel(logging.INFO)
+
+        # 避免重复添加 handler
+        if logger.handlers:
+            logger.handlers.clear()
 
         # 创建控制台处理器
         console_handler = logging.StreamHandler()
@@ -80,6 +90,14 @@ class DataFetcher_jy:
 
         # 添加处理器到日志记录器
         logger.addHandler(console_handler)
+
+        # 文件输出
+        if log_file:
+            os.makedirs(os.path.dirname(log_file), exist_ok=True)
+            file_handler = logging.FileHandler(log_file, encoding='utf-8')
+            file_handler.setLevel(logging.INFO)
+            file_handler.setFormatter(formatter)
+            logger.addHandler(file_handler)
 
         return logger
 
