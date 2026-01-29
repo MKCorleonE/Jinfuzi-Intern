@@ -12,7 +12,7 @@ plt.rcParams['font.sans-serif'] = ['SimHei', 'Microsoft YaHei', 'Arial Unicode M
 plt.rcParams['axes.unicode_minus'] = False
 
 # 🌟 参数设置 🌟
-FILE_PATH = r"D:\jinfuziquant\data\交易情绪因子1.csv"
+FILE_PATH = './data/交易情绪因子1.csv'
 
 # 🌟 回测时间区间选择 🌟
 BACKTEST_START_DATE = '2023-01-01'
@@ -22,8 +22,8 @@ BACKTEST_END_DATE = '2099-12-31'
 SPECIFIC_STAT_DATE = '2025-12-24'
 
 # RTVR 策略参数
-RTVR_WINDOW = 40
-RTVR_LOOKBACK = 66
+RTVR_WINDOW = 40 # 对 RTVR 做 40 日均值平滑
+RTVR_LOOKBACK = 66 # 在最近 66 天内计算当前值的历史分位数
 RTVR_THRESHOLDS = {'H': 0.70, 'L': 0.30, 'FH': 0.90, 'FL': 0.10, 'MH': 0.60, 'ML': 0.40}
 
 # TSM 策略参数
@@ -35,7 +35,7 @@ COST = 0.0002  # 佣金/印花税等固定成本 (万二)
 SLIPPAGE = 0.0003  # 滑点 (万三)：模拟大额订单偏离VWAP的冲击成本
 
 # ----------------------------------------------------------------------
-# 1. 数据加载与预处理
+# 1. 数据加载与预处理(暂无预处理)
 # ----------------------------------------------------------------------
 if not os.path.exists(FILE_PATH):
     print(f"❌ 错误：找不到文件 {FILE_PATH}")

@@ -14,7 +14,7 @@ plt.rcParams['axes.unicode_minus'] = False
 
 class Config:
     # 🌟 文件路径 (请修改为你的实际路径)
-    FILE_PATH = r"D:\jinfuziquant\data\整合数据.csv"
+    FILE_PATH = './data/整合数据.csv'
 
     # 🌟 1. 回测参数 (从2023年开始冷启动)
     START_DATE = '2023-01-01'
