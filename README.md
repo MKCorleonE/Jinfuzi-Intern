@@ -5,6 +5,16 @@
 
 > This project is mainly used to document the work carried out during the internship period.
 
+## Project structure
+```
+Jinfuzi-Intern/
+├── data/
+├── utils/
+├── src/
+├── LICENSE
+├── README.md
+└── requirement.txt
+```
 ## Data Download
 
 ## Data Process
