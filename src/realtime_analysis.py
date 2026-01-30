@@ -12,7 +12,7 @@ plt.rcParams['font.sans-serif'] = ['SimHei', 'Microsoft YaHei', 'Arial Unicode M
 plt.rcParams['axes.unicode_minus'] = False
 
 # 🌟 参数设置 🌟
-FILE_PATH = './data/交易情绪因子1.csv'
+FILE_PATH = './data/realtime_data_updated.csv'
 
 # 🌟 回测时间区间选择 🌟
 BACKTEST_START_DATE = '2023-01-01'
