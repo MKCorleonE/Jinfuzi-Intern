@@ -90,7 +90,7 @@ df['RTVR'] = df['TV_500'] / (df['TV_500'] + df['TV_HL']) # 中证500交易额 / 
 df['RTVR_Factor'] = df['RTVR'].rolling(RTVR_WINDOW).mean() # 取滑动平均值
 df['RTVR_Rank'] = df['RTVR_Factor'].rolling(RTVR_LOOKBACK).apply(
     lambda x: percentileofscore(x[:-1], x.iloc[-1]) / 100 if len(x) == RTVR_LOOKBACK else np.nan, raw=False
-)
+) # 计算当前值在过去66天中的分位数
 
 
 # === 因子 B: TSM 数据准备 ===
@@ -114,9 +114,9 @@ df['TSM_Slope_Abs'] = df['TSM_Rel'].diff().abs().fillna(0)
 # --- RTVR Target Logic ---
 def get_rtvr_target(P):
     if pd.isna(P): return 0.5
-    if P > 0.90: return 0.0
+    if P > 0.90: return 0.0 # 中证500太拥挤了，直接空仓中证500
     if 0.70 < P <= 0.90: return 0.5 - ((P - 0.70) / 0.20) * 0.5
-    if P < 0.10: return 1.0
+    if P < 0.10: return 1.0 # 红利太拥挤了，直接空仓红利
     if 0.10 <= P < 0.30: return 0.5 + ((0.30 - P) / 0.20) * 0.5
     return np.nan
 
