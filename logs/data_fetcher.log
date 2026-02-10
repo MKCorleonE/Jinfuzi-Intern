@@ -160,3 +160,498 @@
 2026-02-09 17:06:11,625 - DataFetcher - INFO - 成功读取本地交易日历数据，日期范围: 1990-12-19 00:00:00 - 2027-12-31 00:00:00
 2026-02-09 17:06:11,640 - DataFetcher - INFO - 筛选后的交易日历数据范围: 2020-12-28 00:00:00 - 2026-12-31 00:00:00
 2026-02-09 17:06:11,641 - DataFetcher - INFO - 交易日数量: 1458
+2026-02-10 15:06:25,054 - DataFetcher - INFO - 数据库连接创建成功
+2026-02-10 15:06:25,055 - DataFetcher - INFO - 开始下载表: NI_News
+2026-02-10 15:06:25,077 - DataFetcher - WARNING - 以下字段在表 NI_News 中不存在: ['ID', 'InfoPublDate', 'Category', 'InfoTitle']
+2026-02-10 15:06:25,077 - DataFetcher - INFO - 执行查询: SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s
+2026-02-10 15:06:25,161 - DataFetcher - ERROR - 下载表 NI_News 失败: Execution failed on sql 'SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s': (pymysql.err.ProgrammingError) (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM NI_News WHERE TRADE_DATE >= '20240101' AND TRADE_DATE <= '20241231'' at line 1")
+[SQL: SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s]
+[parameters: ('20240101', '20241231')]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\cursors.py", line 447, in _query
+    conn.query(q, unbuffered=True)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 575, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 824, in _read_query_result
+    result.init_unbuffered_query()
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 1219, in init_unbuffered_query
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 782, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM NI_News WHERE TRADE_DATE >= '20240101' AND TRADE_DATE <= '20241231'' at line 1")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pandas\io\sql.py", line 1679, in execute
+    return execute_function(sql, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1779, in exec_driver_sql
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 2363, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\cursors.py", line 447, in _query
+    conn.query(q, unbuffered=True)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 575, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 824, in _read_query_result
+    result.init_unbuffered_query()
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 1219, in init_unbuffered_query
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 782, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+sqlalchemy.exc.ProgrammingError: (pymysql.err.ProgrammingError) (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM NI_News WHERE TRADE_DATE >= '20240101' AND TRADE_DATE <= '20241231'' at line 1")
+[SQL: SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s]
+[parameters: ('20240101', '20241231')]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\jinfuziquant\utils\data_fetcher_edict.py", line 240, in fetch_table_to_csv
+    chunks = pd.read_sql(
+             ^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pandas\io\sql.py", line 730, in read_sql
+    return pandas_sql.read_query(
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pandas\io\sql.py", line 1856, in read_query
+    result = self.execute(sql, params)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pandas\io\sql.py", line 1681, in execute
+    raise DatabaseError(f"Execution failed on sql '{sql}': {exc}") from exc
+pandas.errors.DatabaseError: Execution failed on sql 'SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s': (pymysql.err.ProgrammingError) (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM NI_News WHERE TRADE_DATE >= '20240101' AND TRADE_DATE <= '20241231'' at line 1")
+[SQL: SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s]
+[parameters: ('20240101', '20241231')]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+2026-02-10 15:14:04,419 - DataFetcher - INFO - 数据库连接创建成功
+2026-02-10 15:14:04,419 - DataFetcher - INFO - 开始下载表: NI_News
+2026-02-10 15:14:04,438 - DataFetcher - WARNING - 以下字段在表 NI_News 中不存在: ['ID', 'InfoPublDate', 'Category', 'InfoTitle']
+2026-02-10 15:14:04,438 - DataFetcher - INFO - 执行查询: SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s
+2026-02-10 15:14:04,446 - DataFetcher - ERROR - 下载表 NI_News 失败: Execution failed on sql 'SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s': (pymysql.err.ProgrammingError) (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM NI_News WHERE TRADE_DATE >= '20240101' AND TRADE_DATE <= '20241231'' at line 1")
+[SQL: SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s]
+[parameters: ('20240101', '20241231')]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\cursors.py", line 447, in _query
+    conn.query(q, unbuffered=True)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 575, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 824, in _read_query_result
+    result.init_unbuffered_query()
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 1219, in init_unbuffered_query
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 782, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM NI_News WHERE TRADE_DATE >= '20240101' AND TRADE_DATE <= '20241231'' at line 1")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pandas\io\sql.py", line 1679, in execute
+    return execute_function(sql, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1779, in exec_driver_sql
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 2363, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\cursors.py", line 447, in _query
+    conn.query(q, unbuffered=True)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 575, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 824, in _read_query_result
+    result.init_unbuffered_query()
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 1219, in init_unbuffered_query
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 782, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+sqlalchemy.exc.ProgrammingError: (pymysql.err.ProgrammingError) (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM NI_News WHERE TRADE_DATE >= '20240101' AND TRADE_DATE <= '20241231'' at line 1")
+[SQL: SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s]
+[parameters: ('20240101', '20241231')]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\jinfuziquant\utils\data_fetcher_edict.py", line 240, in fetch_table_to_csv
+    chunks = pd.read_sql(
+             ^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pandas\io\sql.py", line 730, in read_sql
+    return pandas_sql.read_query(
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pandas\io\sql.py", line 1856, in read_query
+    result = self.execute(sql, params)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pandas\io\sql.py", line 1681, in execute
+    raise DatabaseError(f"Execution failed on sql '{sql}': {exc}") from exc
+pandas.errors.DatabaseError: Execution failed on sql 'SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s': (pymysql.err.ProgrammingError) (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM NI_News WHERE TRADE_DATE >= '20240101' AND TRADE_DATE <= '20241231'' at line 1")
+[SQL: SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s]
+[parameters: ('20240101', '20241231')]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+2026-02-10 15:14:58,775 - DataFetcher - INFO - 数据库连接创建成功
+2026-02-10 15:14:58,775 - DataFetcher - INFO - 开始下载表: NI_News
+2026-02-10 15:14:58,793 - DataFetcher - WARNING - 以下字段在表 NI_News 中不存在: ['ID', 'InfoPublDate', 'Category', 'InfoTitle']
+2026-02-10 15:14:58,793 - DataFetcher - INFO - 执行查询: SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s
+2026-02-10 15:14:58,802 - DataFetcher - ERROR - 下载表 NI_News 失败: Execution failed on sql 'SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s': (pymysql.err.ProgrammingError) (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM NI_News WHERE TRADE_DATE >= '20240101' AND TRADE_DATE <= '20241231'' at line 1")
+[SQL: SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s]
+[parameters: ('20240101', '20241231')]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\cursors.py", line 447, in _query
+    conn.query(q, unbuffered=True)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 575, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 824, in _read_query_result
+    result.init_unbuffered_query()
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 1219, in init_unbuffered_query
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 782, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM NI_News WHERE TRADE_DATE >= '20240101' AND TRADE_DATE <= '20241231'' at line 1")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pandas\io\sql.py", line 1679, in execute
+    return execute_function(sql, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1779, in exec_driver_sql
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 2363, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\cursors.py", line 447, in _query
+    conn.query(q, unbuffered=True)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 575, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 824, in _read_query_result
+    result.init_unbuffered_query()
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 1219, in init_unbuffered_query
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 782, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+sqlalchemy.exc.ProgrammingError: (pymysql.err.ProgrammingError) (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM NI_News WHERE TRADE_DATE >= '20240101' AND TRADE_DATE <= '20241231'' at line 1")
+[SQL: SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s]
+[parameters: ('20240101', '20241231')]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\jinfuziquant\utils\data_fetcher_edict.py", line 240, in fetch_table_to_csv
+    chunks = pd.read_sql(
+             ^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pandas\io\sql.py", line 730, in read_sql
+    return pandas_sql.read_query(
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pandas\io\sql.py", line 1856, in read_query
+    result = self.execute(sql, params)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pandas\io\sql.py", line 1681, in execute
+    raise DatabaseError(f"Execution failed on sql '{sql}': {exc}") from exc
+pandas.errors.DatabaseError: Execution failed on sql 'SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s': (pymysql.err.ProgrammingError) (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM NI_News WHERE TRADE_DATE >= '20240101' AND TRADE_DATE <= '20241231'' at line 1")
+[SQL: SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s]
+[parameters: ('20240101', '20241231')]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+2026-02-10 15:19:27,891 - DataFetcher - INFO - 数据库连接创建成功
+2026-02-10 15:19:27,892 - DataFetcher - INFO - 开始下载表: NI_News
+2026-02-10 15:19:27,909 - DataFetcher - WARNING - 以下字段在表 NI_News 中不存在: ['ID', 'InfoPublDate', 'Category', 'InfoTitle']
+2026-02-10 15:19:27,910 - DataFetcher - INFO - 执行查询: SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s
+2026-02-10 15:19:27,918 - DataFetcher - ERROR - 下载表 NI_News 失败: Execution failed on sql 'SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s': (pymysql.err.ProgrammingError) (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM NI_News WHERE TRADE_DATE >= '20240101' AND TRADE_DATE <= '20241231'' at line 1")
+[SQL: SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s]
+[parameters: ('20240101', '20241231')]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\cursors.py", line 447, in _query
+    conn.query(q, unbuffered=True)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 575, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 824, in _read_query_result
+    result.init_unbuffered_query()
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 1219, in init_unbuffered_query
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 782, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM NI_News WHERE TRADE_DATE >= '20240101' AND TRADE_DATE <= '20241231'' at line 1")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pandas\io\sql.py", line 1679, in execute
+    return execute_function(sql, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1779, in exec_driver_sql
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 2363, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\cursors.py", line 447, in _query
+    conn.query(q, unbuffered=True)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 575, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 824, in _read_query_result
+    result.init_unbuffered_query()
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 1219, in init_unbuffered_query
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 782, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+sqlalchemy.exc.ProgrammingError: (pymysql.err.ProgrammingError) (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM NI_News WHERE TRADE_DATE >= '20240101' AND TRADE_DATE <= '20241231'' at line 1")
+[SQL: SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s]
+[parameters: ('20240101', '20241231')]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\jinfuziquant\utils\data_fetcher_edict.py", line 240, in fetch_table_to_csv
+    chunks = pd.read_sql(
+             ^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pandas\io\sql.py", line 730, in read_sql
+    return pandas_sql.read_query(
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pandas\io\sql.py", line 1856, in read_query
+    result = self.execute(sql, params)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pandas\io\sql.py", line 1681, in execute
+    raise DatabaseError(f"Execution failed on sql '{sql}': {exc}") from exc
+pandas.errors.DatabaseError: Execution failed on sql 'SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s': (pymysql.err.ProgrammingError) (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM NI_News WHERE TRADE_DATE >= '20240101' AND TRADE_DATE <= '20241231'' at line 1")
+[SQL: SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s]
+[parameters: ('20240101', '20241231')]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+2026-02-10 15:20:13,713 - DataFetcher - INFO - 数据库连接创建成功
+2026-02-10 15:20:13,713 - DataFetcher - INFO - 开始下载表: NI_News
+2026-02-10 15:20:13,727 - DataFetcher - WARNING - 以下字段在表 NI_News 中不存在: ['ID', 'InfoPublDate', 'Category', 'InfoTitle']
+2026-02-10 15:20:13,728 - DataFetcher - INFO - 执行查询: SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s
+2026-02-10 15:20:13,735 - DataFetcher - ERROR - 下载表 NI_News 失败: Execution failed on sql 'SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s': (pymysql.err.ProgrammingError) (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM NI_News WHERE TRADE_DATE >= '20240101' AND TRADE_DATE <= '20241231'' at line 1")
+[SQL: SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s]
+[parameters: ('20240101', '20241231')]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\cursors.py", line 447, in _query
+    conn.query(q, unbuffered=True)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 575, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 824, in _read_query_result
+    result.init_unbuffered_query()
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 1219, in init_unbuffered_query
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 782, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.ProgrammingError: (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM NI_News WHERE TRADE_DATE >= '20240101' AND TRADE_DATE <= '20241231'' at line 1")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pandas\io\sql.py", line 1679, in execute
+    return execute_function(sql, *args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1779, in exec_driver_sql
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1986, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 2363, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\base.py", line 1967, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\sqlalchemy\engine\default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\cursors.py", line 153, in execute
+    result = self._query(query)
+             ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\cursors.py", line 447, in _query
+    conn.query(q, unbuffered=True)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 575, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 824, in _read_query_result
+    result.init_unbuffered_query()
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 1219, in init_unbuffered_query
+    first_packet = self.connection._read_packet()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\connections.py", line 782, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\protocol.py", line 219, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pymysql\err.py", line 150, in raise_mysql_exception
+    raise errorclass(errno, errval)
+sqlalchemy.exc.ProgrammingError: (pymysql.err.ProgrammingError) (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM NI_News WHERE TRADE_DATE >= '20240101' AND TRADE_DATE <= '20241231'' at line 1")
+[SQL: SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s]
+[parameters: ('20240101', '20241231')]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\jinfuziquant\utils\data_fetcher_edict.py", line 240, in fetch_table_to_csv
+    chunks = pd.read_sql(
+             ^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pandas\io\sql.py", line 730, in read_sql
+    return pandas_sql.read_query(
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pandas\io\sql.py", line 1856, in read_query
+    result = self.execute(sql, params)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\given.liang\.conda\envs\quant\Lib\site-packages\pandas\io\sql.py", line 1681, in execute
+    raise DatabaseError(f"Execution failed on sql '{sql}': {exc}") from exc
+pandas.errors.DatabaseError: Execution failed on sql 'SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s': (pymysql.err.ProgrammingError) (1064, "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM NI_News WHERE TRADE_DATE >= '20240101' AND TRADE_DATE <= '20241231'' at line 1")
+[SQL: SELECT  FROM NI_News WHERE TRADE_DATE >= %s AND TRADE_DATE <= %s]
+[parameters: ('20240101', '20241231')]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+2026-02-10 17:24:57,952 - DataFetcher - INFO - 数据库连接创建成功
+2026-02-10 17:24:57,953 - DataFetcher - INFO - 从本地读取交易日历数据...
+2026-02-10 17:24:58,081 - DataFetcher - INFO - 成功读取本地交易日历数据，日期范围: 1990-12-19 00:00:00 - 2027-12-31 00:00:00
+2026-02-10 17:24:58,101 - DataFetcher - INFO - 筛选后的交易日历数据范围: 2020-12-28 00:00:00 - 2026-12-31 00:00:00
+2026-02-10 17:24:58,102 - DataFetcher - INFO - 交易日数量: 1458
+2026-02-10 17:29:22,415 - DataFetcher - INFO - 数据库连接创建成功
+2026-02-10 17:29:22,417 - DataFetcher - INFO - 从本地读取交易日历数据...
+2026-02-10 17:29:22,537 - DataFetcher - INFO - 成功读取本地交易日历数据，日期范围: 1990-12-19 00:00:00 - 2027-12-31 00:00:00
+2026-02-10 17:29:22,556 - DataFetcher - INFO - 筛选后的交易日历数据范围: 2020-12-28 00:00:00 - 2026-12-31 00:00:00
+2026-02-10 17:29:22,556 - DataFetcher - INFO - 交易日数量: 1458
