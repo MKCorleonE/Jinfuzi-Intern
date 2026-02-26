@@ -254,7 +254,7 @@ plt.tight_layout()
 # 创建 images 目录（若不存在）
 os.makedirs("images", exist_ok=True)
 # 保存高清图片（dpi=300 保证清晰度，bbox_inches='tight' 去白边）
-plt.savefig("images/ems/backtest_result.png", dpi=300, bbox_inches='tight', facecolor='white')
+plt.savefig("images/ems/backtest_result_history.png", dpi=300, bbox_inches='tight', facecolor='white')
 # plt.savefig("images/backtest_result.pdf", bbox_inches='tight')  # 可选：保存矢量图用于报告
 # ==================================
 plt.show()
