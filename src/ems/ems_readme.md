@@ -150,7 +150,7 @@ df_bt['Strat_Ret'] = raw_ret - (df_bt['Turnover'] * (COST + SLIPPAGE) * 2)
 
 #### 📊 回测结果可视化
 
-![策略回测结果](images/ems/backtest_result.png)
+![策略回测结果](../../images/ems/backtest_result.png)
 
 > **图表说明**  
 > - **上图**：策略净值 vs 基准（50%中证500 + 50%红利低波）  
