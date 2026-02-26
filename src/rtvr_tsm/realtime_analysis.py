@@ -104,6 +104,9 @@ def calc_tsm(prefix):
 
 
 df['TSM_Rel'] = (calc_tsm('1') - calc_tsm('2')).ewm(span=25, adjust=False).mean()
+# 预览最后几天的 TSM 计算结果，确保没有异常值
+print("\n🔍 TSM 因子预览:"
+      f"\n{df[['TSM_Rel']].tail(10)}")
 df['TSM_Slope_Abs'] = df['TSM_Rel'].diff().abs().fillna(0)
 
 
@@ -155,6 +158,9 @@ for i in range(3, len(df)):
     elif (val > 0.04 and np.all(slopes == -1)) or (val < -0.04 and np.all(slopes == 1)):
         tsm_w = 0.5
     # 若不满足上述任何条件，保持上一次的 tsm_w 不变
+    else:
+        tsm_w = df['Target_TSM'].iloc[i - 1]  # 维持原有仓位不变
+
 
     df.iloc[i, df.columns.get_loc('Target_TSM')] = tsm_w
 

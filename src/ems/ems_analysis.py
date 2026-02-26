@@ -9,7 +9,7 @@ import os
 plt.rcParams['font.sans-serif'] = ['SimHei', 'Arial Unicode MS']
 plt.rcParams['axes.unicode_minus'] = False
 
-FILE_PATH = r"D:\工作交接\量化因子\未证伪情绪动量\交易情绪因子2.csv"
+FILE_PATH = r"D:\jinfuziquant\data\realtime_data_updated.csv"
 BACKTEST_START_DATE = '2021-01-01'
 BACKTEST_END_DATE = '2099-12-31'
 
@@ -39,6 +39,7 @@ if not os.path.exists(FILE_PATH):
 
 df = pd.read_csv(FILE_PATH, parse_dates=['TradingDay']).set_index('TradingDay').sort_index()
 
+# 重命名列，return是收益率，turnover_value是成交额，negotiable_mv是流通市值
 df.rename(columns={
     'index_return1': 'Ret_Idx_500', 'turnover_value1': 'Val_500', 'negotiable_mv1': 'MV_500',
     'index_return2': 'Ret_Idx_HL', 'turnover_value2': 'Val_HL', 'negotiable_mv2': 'MV_HL'
@@ -53,26 +54,32 @@ df['Ret_ETF_HL'] = df['close_price5'] / df['prev_close5'] - 1
 # ----------------------------------------------------------------------
 # 2. 因子计算
 # ----------------------------------------------------------------------
+# 计算情绪残差的核心函数
 def calc_sentiment_residual(series_ret, series_val, series_mv, window):
     if series_mv.sum() == 0 or series_mv.isna().all():
         tr = np.log(series_val)
         delta_tr = tr.diff()
     else:
         tr = series_val / series_mv
+        # 近似成交额变化率
         delta_tr = tr / tr.shift(1) - 1
     delta_tr = delta_tr.replace([np.inf, -np.inf], np.nan).fillna(0)
 
     cov = series_ret.rolling(window).cov(delta_tr)
     var = delta_tr.rolling(window).var()
+    # 敏感度系数
     beta = cov / var
+    # 截距项
     alpha = series_ret.rolling(window).mean() - beta * delta_tr.rolling(window).mean()
 
+    # 残差 = 实际收益 - (alpha + beta * 近似成交额变化率)，代表“无法被交易活跃度解释的异常收益”
     return series_ret - (alpha + beta * delta_tr)
 
 
 # 1. 原始因子
 df['Sent_500'] = calc_sentiment_residual(df['Ret_Idx_500'], df['Val_500'], df['MV_500'], SENTIMENT_WINDOW)
 df['Sent_HL'] = calc_sentiment_residual(df['Ret_Idx_HL'], df['Val_HL'], df['MV_HL'], SENTIMENT_WINDOW)
+# 因子合成：500残差 - 红利残差，代表相对强弱
 df['Factor_Cum'] = (df['Sent_500'] - df['Sent_HL']).cumsum()
 
 # 2. 趋势反转合成
@@ -80,7 +87,7 @@ df['Mom_Mid'] = df['Factor_Cum'].diff(MID_TERM_WINDOW)
 df['Mom_Short'] = df['Factor_Cum'].diff(SHORT_TERM_WINDOW)
 df['Alpha_Score'] = df['Mom_Mid'] - (REVERSAL_WEIGHT * df['Mom_Short'])
 
-# 3. 信号平滑
+# 3. 信号平滑，三日滚动平均，减少噪音干扰
 df['Alpha_Score_Smooth'] = df['Alpha_Score'].rolling(3).mean()
 
 # ----------------------------------------------------------------------
@@ -89,6 +96,7 @@ df['Alpha_Score_Smooth'] = df['Alpha_Score'].rolling(3).mean()
 # 计算 Z-Score
 roll_mean = df['Alpha_Score_Smooth'].rolling(STRENGTH_WINDOW).mean()
 roll_std = df['Alpha_Score_Smooth'].rolling(STRENGTH_WINDOW).std()
+# 标准化信号强度，得到 Z-Score，代表当前信号相对于历史的强弱程度
 df['Signal_Z'] = (df['Alpha_Score_Smooth'] - roll_mean) / roll_std
 
 
@@ -241,4 +249,12 @@ axes[3].set_title('棘轮仓位 (阶梯式加仓 -> 垂直重置)')
 axes[3].set_ylim(-0.1, 1.1)
 
 plt.tight_layout()
+
+# ====== 在 plt.show() 前插入 ======
+# 创建 images 目录（若不存在）
+os.makedirs("images", exist_ok=True)
+# 保存高清图片（dpi=300 保证清晰度，bbox_inches='tight' 去白边）
+plt.savefig("images/ems/backtest_result.png", dpi=300, bbox_inches='tight', facecolor='white')
+# plt.savefig("images/backtest_result.pdf", bbox_inches='tight')  # 可选：保存矢量图用于报告
+# ==================================
 plt.show()
