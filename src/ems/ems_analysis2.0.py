@@ -200,7 +200,7 @@ csv_df = pd.DataFrame(csv_data, columns=[
 ])
 
 # 保存CSV文件（UTF-8-SIG确保Excel正确显示中文）
-output_dir = "images/ems"
+output_dir = "results/ems"
 os.makedirs(output_dir, exist_ok=True)
 csv_path = os.path.join(output_dir, "backtest_monitor_table.csv")
 csv_df.to_csv(csv_path, index=False, encoding='utf-8-sig')

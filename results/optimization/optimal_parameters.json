@@ -1,0 +1,24 @@
+{
+    "method": "cross_validated_sharpe",
+    "window_size": 40,
+    "history_window": 20,
+    "cv_sharpe": 0.5342493572996179,
+    "full_sharpe": 1.2393440077132394,
+    "calmar": 1.494957415950637,
+    "max_drawdown": -0.14465771051820375,
+    "annual_return": 0.21625711711362916,
+    "information_ratio": 1.433614384812121,
+    "selection_reason": "最高交叉验证夏普比率（防过拟合）",
+    "alternatives": {
+        "by_full_sharpe": {
+            "window_size": 40,
+            "history_window": 20,
+            "sharpe": 1.2393440077132394
+        },
+        "by_pareto": {
+            "window_size": 40,
+            "history_window": 20,
+            "combined_rank": 2.0
+        }
+    }
+}
