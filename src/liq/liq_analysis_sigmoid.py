@@ -196,6 +196,7 @@ try:
 except Exception as e:
     print(f"   ⚠️ 统计计算错误: {e}")
 
+
 # 绘图
 fig, axs = plt.subplots(3, figsize=(10, 8))
 
