@@ -24,7 +24,7 @@ STRATEGY_START_DATE = '2026-01-25'
 # 策略参数
 WINDOW_SIZE = 40 # 计算信号的滚动窗口
 HISTORY_WINDOW = 20  # 历史分位数窗口
-
+REBALANCE_THRESHOLD = 0.05
 # 交易成本与滑点
 COST = 0.0002
 SLIPPAGE = 0.0003
@@ -139,9 +139,19 @@ df_bt['Signal_Rank_Shifted'] = df_bt['Signal_Rank'].shift(-shift)  # 提前一�
 df_bt['Target_500'] = sigmoid(df_bt['Signal_Rank_Shifted'] - 0.5, scale=SIGMOID_SCALE)
 df_bt['Target_HL'] = 1 - df_bt['Target_500']
 
-# 计算实际仓位：当前天持有的是前一天的目标仓位
-df_bt['Position_500'] = df_bt['Target_500'].shift(1).fillna(0.5)
-df_bt['Position_HL'] = df_bt['Target_HL'].shift(1).fillna(0.5)
+
+# 应用调仓阈值：仅当目标仓位变化超过阈值时才调仓
+df_bt['Position_500_prev'] = df_bt['Target_500'].shift(1).fillna(0.5)
+df_bt['Position_HL_prev'] = 1 - df_bt['Position_500_prev']
+
+# 计算是否需要调仓
+df_bt['Need_Rebalance'] = abs(df_bt['Target_500'] - df_bt['Position_500_prev']) >= REBALANCE_THRESHOLD
+df_bt['Position_500'] = np.where(
+    df_bt['Need_Rebalance'], 
+    df_bt['Target_500'].shift(1).fillna(0.5),  # 调仓时使用前一天的目标仓位
+    df_bt['Position_500_prev'].shift(1).fillna(0.5)  # 不调仓时保持前一天的实际仓位
+)
+df_bt['Position_HL'] = 1 - df_bt['Position_500']
 
 # 预览仓位调整结果
 print("\n🔍 仓位调整预览:")
@@ -173,13 +183,6 @@ strategy_ret = df_bt['Cumulative_Strategy_Return'].iloc[-1] - 1
 benchmark_ret = df_bt['Cumulative_Benchmark_Return'].iloc[-1] - 1
 excess_ret = df_bt['Excess_Return'].iloc[-1] 
 
-# 年化收益率计算 （假设每年252个交易日）
-num_years = (df_bt.index[-1] - df_bt.index[0]).days / 252
-annualized_strategy_ret = (1 + strategy_ret) ** (1 / num_years) - 1
-annualized_benchmark_ret = (1 + benchmark_ret) ** (1 / num_years) - 1
-annualized_excess_ret = annualized_strategy_ret - annualized_benchmark_ret
-
-
 
 print("-" * 50)
 print("\n📊 回测绩效摘要:")
@@ -188,10 +191,6 @@ print(f"策略总收益率:        {strategy_ret*100:.2f}%")
 print(f"基准总收益率:        {benchmark_ret*100:.2f}%")
 print(f"相对超额收益:        {excess_ret*100:.2f}%")
 print(f"最大回撤: {max_dd*100:.2f}%")
-print("-" * 50)
-print(f"年化策略收益率:      {annualized_strategy_ret*100:.2f}%")
-print(f"年化基准收益率:      {annualized_benchmark_ret*100:.2f}%")
-print(f"年化超额收益率:      {annualized_excess_ret*100:.2f}%")
 print("-" * 50)
 print(f"📅 特定区间统计: 【 {STRATEGY_START_DATE} 至今 】")
 print("-" * 50)
@@ -228,6 +227,6 @@ axs[2].set_title('仓位分布')
 axs[2].legend()
 
 plt.tight_layout()
-plt.savefig('results/liq/backtest_results_sigmoid.png', dpi=300)
+plt.savefig('results/liq/backtest_results_sigmoid3.png', dpi=300)
 plt.show()
 

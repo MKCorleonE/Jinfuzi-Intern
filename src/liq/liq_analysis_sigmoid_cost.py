@@ -116,23 +116,18 @@ df_bt = df.loc[BACKTEST_START_DATE:BACKTEST_END_DATE].copy()
 df_bt['Target_500'] = sigmoid(df_bt['Signal_Rank'] - 0.5, scale=SIGMOID_SCALE)
 df_bt['Target_HL'] = 1 - df_bt['Target_500']
 
-# 应用调仓阈值：仅当目标仓位变化超过阈值时才调仓
-df_bt['Position_500_prev'] = df_bt['Target_500'].shift(1).fillna(0.5)
-df_bt['Position_HL_prev'] = 1 - df_bt['Position_500_prev']
+# 计算实际仓位：当前天持有的是前一天的目标仓位
+df_bt['Position_500'] = df_bt['Target_500'].shift(1).fillna(0.5)
+df_bt['Position_HL'] = df_bt['Target_HL'].shift(1).fillna(0.5)
 
-# 计算是否需要调仓
-df_bt['Need_Rebalance'] = abs(df_bt['Target_500'] - df_bt['Position_500_prev']) >= REBALANCE_THRESHOLD
-df_bt['Position_500'] = np.where(
-    df_bt['Need_Rebalance'], 
-    df_bt['Target_500'], 
-    df_bt['Position_500_prev']
-)
-df_bt['Position_HL'] = 1 - df_bt['Position_500']
+# 计算是否需要调仓,返回一个布尔值序列
+df_bt['Need_Rebalance'] = abs(df_bt['Target_500'] - df_bt['Position_500']) > 0
+
 
 # 预览仓位调整结果
 print("\n🔍 仓位调整预览 (含调仓阈值):")
 print(df_bt[['Target_500', 'Position_500', 'Need_Rebalance']].tail(20))
-print(f"📊 调仓频率统计: 总交易日 {len(df_bt)}, 实际调仓次数 {df_bt['Need_Rebalance'].sum()}, 调仓比例 {df_bt['Need_Rebalance'].mean():.2%}")
+print(f"📊 调仓频率统计: 总交易日 {len(df_bt)}, 实际调仓次数 {df_bt['Need_Rebalance'].sum()}")
 
 # ----------------------------------------------------------------------
 # 4. 回测执行（含精确交易成本计算）

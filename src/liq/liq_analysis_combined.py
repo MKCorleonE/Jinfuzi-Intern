@@ -25,6 +25,8 @@ STRATEGY_START_DATE = '2026-01-25'
 WINDOW_SIZE = 40 # 计算信号的滚动窗口
 HISTORY_WINDOW = 20  # 历史分位数窗口
 
+PRICE_WINDOW = 5  # 计算涨跌差窗口
+
 # 交易成本与滑点
 COST = 0.0002
 SLIPPAGE = 0.0003
@@ -77,40 +79,15 @@ df['Signal'] = df['Signal_500'] - df['Signal_HL']
 # 计算该信号在历史上的分位数（相对于过去HISTORY_WINDOW个交易日）
 df['Signal_Rank'] = df['Signal'].rolling(window=HISTORY_WINDOW).apply(lambda x: percentileofscore(x, x.iloc[-1]) / 100)
 
-# 可视化分位数分布(横轴是日期，纵轴是分位数,叠加500和红利的收盘价和涨跌幅走势)
-shift = 0                # 想要提前的周期数
-rank_shifted = df['Signal_Rank'].shift(-shift)
 
-fig, ax1 = plt.subplots(figsize=(10, 4))
+#涨幅差信号
+# 计算近n日指数涨幅差
+df['Ret_Diff'] = df['Ret_Index_500'].rolling(PRICE_WINDOW).sum() - df['Ret_Index_HL'].rolling(PRICE_WINDOW).sum()
+# 涨幅差取历史分位数
+df['Ret_Diff_Signal'] = df['Ret_Diff'].rolling(HISTORY_WINDOW).apply(lambda x: percentileofscore(x, x.iloc[-1]) / 100)
 
-ax1.plot(df.index, rank_shifted,
-         color='tab:blue',
-         label=f'Signal Rank (lead {shift})')   # 标明平移
-ax1.set_xlabel('Date')
-ax1.set_ylabel('Signal Rank', color='tab:blue')
-ax1.tick_params(axis='y', labelcolor='tab:blue')
-
-ax2 = ax1.twinx()
-ax2.plot(df.index, df['Close_500'],
-         color='tab:orange', label='Close_500')
-ax2.plot(df.index, df['Close_HL'],
-         color='tab:green',  label='Close_HL')
-ax2.set_ylabel('Price', color='tab:orange')
-ax2.tick_params(axis='y', labelcolor='tab:orange')
-
-lines1, labels1 = ax1.get_legend_handles_labels()
-lines2, labels2 = ax2.get_legend_handles_labels()
-ax1.legend(lines1 + lines2, labels1 + labels2, loc='best')
-
-ax1.grid(True)
-plt.title('Signal Rank Over Time (shifted)')
-plt.savefig('results/liq/signal_rank_shifted.png', dpi=300)
-plt.show()
-
-
-# 预览信号构建结果
-print("\n🔍 信号构建预览:")
-print(df[['Signal_500', 'Signal_HL', 'Signal', 'Signal_Rank']].tail(20))
+# 综合信号
+df['Combined_Signal'] = 1 * df['Signal_Rank'] + 0 * df['Ret_Diff_Signal']
 
 # ----------------------------------------------------------------------
 # 3. 仓位管理，构建目标持仓序列（Sigmoid调仓）
@@ -127,7 +104,6 @@ def sigmoid(x, scale=SIGMOID_SCALE):
     """
     return 1 / (1 + np.exp(-scale * x))
 
-shift = 0
 
 # 初始仓位设置为50%-50%
 df_bt = df.loc[BACKTEST_START_DATE:BACKTEST_END_DATE].copy()
@@ -135,8 +111,7 @@ df_bt = df.loc[BACKTEST_START_DATE:BACKTEST_END_DATE].copy()
 # 使用Sigmoid函数将Signal_Rank转换为目标仓位
 # Signal_Rank: [0, 1] -> 中心点0.5，转换为 [-0.5, 0.5] -> sigmoid -> [~0.0067, ~0.993]
 # 这样实现平滑的仓位调整
-df_bt['Signal_Rank_Shifted'] = df_bt['Signal_Rank'].shift(-shift)  # 提前一个周期信号
-df_bt['Target_500'] = sigmoid(df_bt['Signal_Rank_Shifted'] - 0.5, scale=SIGMOID_SCALE)
+df_bt['Target_500'] = sigmoid(df_bt['Combined_Signal'] - 0.5, scale=SIGMOID_SCALE)
 df_bt['Target_HL'] = 1 - df_bt['Target_500']
 
 # 计算实际仓位：当前天持有的是前一天的目标仓位
@@ -173,13 +148,6 @@ strategy_ret = df_bt['Cumulative_Strategy_Return'].iloc[-1] - 1
 benchmark_ret = df_bt['Cumulative_Benchmark_Return'].iloc[-1] - 1
 excess_ret = df_bt['Excess_Return'].iloc[-1] 
 
-# 年化收益率计算 （假设每年252个交易日）
-num_years = (df_bt.index[-1] - df_bt.index[0]).days / 252
-annualized_strategy_ret = (1 + strategy_ret) ** (1 / num_years) - 1
-annualized_benchmark_ret = (1 + benchmark_ret) ** (1 / num_years) - 1
-annualized_excess_ret = annualized_strategy_ret - annualized_benchmark_ret
-
-
 
 print("-" * 50)
 print("\n📊 回测绩效摘要:")
@@ -188,10 +156,6 @@ print(f"策略总收益率:        {strategy_ret*100:.2f}%")
 print(f"基准总收益率:        {benchmark_ret*100:.2f}%")
 print(f"相对超额收益:        {excess_ret*100:.2f}%")
 print(f"最大回撤: {max_dd*100:.2f}%")
-print("-" * 50)
-print(f"年化策略收益率:      {annualized_strategy_ret*100:.2f}%")
-print(f"年化基准收益率:      {annualized_benchmark_ret*100:.2f}%")
-print(f"年化超额收益率:      {annualized_excess_ret*100:.2f}%")
 print("-" * 50)
 print(f"📅 特定区间统计: 【 {STRATEGY_START_DATE} 至今 】")
 print("-" * 50)
@@ -228,6 +192,6 @@ axs[2].set_title('仓位分布')
 axs[2].legend()
 
 plt.tight_layout()
-plt.savefig('results/liq/backtest_results_sigmoid.png', dpi=300)
+plt.savefig('results/liq/backtest_results_combined.png', dpi=300)
 plt.show()
 
