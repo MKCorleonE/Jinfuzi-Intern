@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from scipy.stats import percentileofscore
 import os
+from factor_liq import calculate_liquidity_factor
 
 # ----------------------------------------------------------------------
 # 0. 全局设置
@@ -59,23 +60,14 @@ df.rename(columns={'change_pct4': 'Ret_Fund_500', 'change_pct5': 'Ret_Fund_HL'},
 # ----------------------------------------------------------------------
 # 2. 信号构建
 # ----------------------------------------------------------------------
-# 初始信号（窗口期内的平均收益率/窗口期内的平均交易量）
-"""
-指标越高时，说明较小的成交量就能够导致较大幅度的价格变化，这意味着这笔交易对于个股价
-格的冲击较大，从某种层面意味着个股的流动性越差。
-"""
-df['Signal_500'] = df['Ret_Index_500'].rolling(window=WINDOW_SIZE).mean() / df['TV_500'].rolling(window=WINDOW_SIZE).mean()
-df['Signal_HL'] = df['Ret_Index_HL'].rolling(window=WINDOW_SIZE).mean() / df['TV_HL'].rolling(window=WINDOW_SIZE).mean()
-
-# 修正：使用滚动窗口标准化（避免使用全序列统计量导致的未来函数）
-df['Signal_500'] = (df['Signal_500'] - df['Signal_500'].rolling(WINDOW_SIZE*2).mean()) / (df['Signal_500'].rolling(WINDOW_SIZE*2).std() + 1e-10)
-df['Signal_HL'] = (df['Signal_HL'] - df['Signal_HL'].rolling(WINDOW_SIZE*2).mean()) / (df['Signal_HL'].rolling(WINDOW_SIZE*2).std() + 1e-10)
-
-# 两者作差，形成相对性信号（大于0表示500指数表现更好，小于0表示沪深300表现更好）
-df['Signal'] = df['Signal_500'] - df['Signal_HL']
-
-# 计算该信号在历史上的分位数（相对于过去HISTORY_WINDOW个交易日）
-df['Signal_Rank'] = df['Signal'].rolling(window=HISTORY_WINDOW).apply(lambda x: percentileofscore(x, x.iloc[-1]) / 100)
+# ----------------------------------------------------------------------
+# 2. 因子计算（调用解耦后的因子模块）
+# ----------------------------------------------------------------------
+df['Signal_Rank'] = calculate_liquidity_factor(
+    df,
+    window_size=WINDOW_SIZE,
+    history_window=HISTORY_WINDOW
+)
 
 # 可视化分位数分布(横轴是日期，纵轴是分位数,叠加500和红利的收盘价和涨跌幅走势)
 shift = 0                # 想要提前的周期数
@@ -110,7 +102,7 @@ plt.show()
 
 # 预览信号构建结果
 print("\n🔍 信号构建预览:")
-print(df[['Signal_500', 'Signal_HL', 'Signal', 'Signal_Rank']].tail(20))
+print(df[['Signal_Rank']].tail(20))
 
 # ----------------------------------------------------------------------
 # 3. 仓位管理，构建目标持仓序列（Sigmoid调仓）

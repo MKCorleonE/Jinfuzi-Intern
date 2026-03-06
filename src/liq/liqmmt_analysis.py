@@ -4,6 +4,26 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from scipy.stats import percentileofscore
 import os
+from scipy.stats import spearmanr
+import warnings
+import sys
+import re
+
+# 忽略警告信息
+warnings.filterwarnings('ignore')
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # ----------------------------------------------------------------------
 # 0. 全局设置
@@ -209,10 +229,7 @@ try:
 except Exception as e:
     print(f"   ⚠️ 统计计算错误: {e}")
 
-# 记录策略起始日之后的累计收益率（策略起始日累计策略收益率、策略起始日累计基准收益率、策略起始日累计超额收益率）
-df_spec['Strategy_Return_From_Start'] = df_spec['Cumulative_Strategy_Return'] / df_spec['Cumulative_Strategy_Return'].iloc[0] - 1
-df_spec['Benchmark_Return_From_Start'] = df_spec['Cumulative_Benchmark_Return'] / df_spec['Cumulative_Benchmark_Return'].iloc[0] - 1
-df_spec['Excess_Return_From_Start'] = df_spec['Strategy_Return_From_Start'] - df_spec['Benchmark_Return_From_Start']
+
 # 绘图
 fig, axs = plt.subplots(3, figsize=(10, 8))
 
@@ -234,27 +251,3 @@ plt.tight_layout()
 plt.savefig('results/liq/backtest_results_sigmoid.png', dpi=300)
 plt.show()
 
-# 输出指定中文绩效到CSV（日期、因子值、当日500仓位、当日红利仓位、500目标仓位、红利目标仓位、当日500涨幅、当日红利涨幅、策略起始日累计策略收益率、策略起始日累计基准收益率、策略起始日累计超额收益率）
-df
-output_file = 'results/liq/backtest_results_sigmoid.csv'
-df_output = df_spec.loc[:, [
-    'Signal_Rank_Shifted', 'Position_500', 'Position_HL', 'Target_500', 'Target_HL',
-    'Ret_Fund_500', 'Ret_Fund_HL', 'Strategy_Return_From_Start', 'Benchmark_Return_From_Start', 'Excess_Return_From_Start'
-]].copy()
-df_output.rename(columns={
-    'Signal_Rank_Shifted': '因子分位数',
-    'Position_500': '当日500仓位',
-    'Position_HL': '当日红利仓位',
-    'Target_500': '500目标仓位',
-    'Target_HL': '红利目标仓位',
-    'Ret_Fund_500': '当日500涨幅',
-    'Ret_Fund_HL': '当日红利涨幅',
-    'Strategy_Return_From_Start': '策略起始日累计策略收益率',
-    'Benchmark_Return_From_Start': '策略起始日累计基准收益率',
-    'Excess_Return_From_Start': '策略起始日累计超额收益率'
-}, inplace=True)
-try:
-    df_output.to_csv(output_file, index=True, encoding='utf-8-sig')
-    print(f"\n✅ 成功导出绩效数据到 {output_file}")
-except Exception as e:
-    print(f"\n❌ 导出绩效数据失败: {e}")
